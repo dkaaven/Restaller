@@ -1,4 +1,4 @@
-   ____           _        _ _           
+```  ____           _        _ _           
   |  _ \ ___  ___| |_ __ _| | | ___ _ __ 
   | |_) / _ \/ __| __/ _` | | |/ _ \ '__|
   |  _ <  __/\__ \ || (_| | | |  __/ |   
@@ -9,7 +9,7 @@
             By Daniel Kåven
                @dkaaven
        -------------------------
-       
+```
 # Restaller - Simplifying reinstallation
 
 This script will help you set up the system the first time.
