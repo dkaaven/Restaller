@@ -72,3 +72,4 @@ bash install.sh
 
 # Author
 **Daniel Kåven** - [@dkaaven](https://github.com/dkaaven)
+I use AI to help me learn shell-script, but the code is planned and written by me.
