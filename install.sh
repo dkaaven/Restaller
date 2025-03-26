@@ -9,12 +9,12 @@ if [ ! -e "config.sh" ];then
     if [ ! -e "config.sh.temp" ];then
         cp config.sh.temp config.sh
         echo -e "Config file was created, please update it before you continue."
-        read -p
+        read ""
         exit
     else
         touch config.sh
         echo -e "An empty Config file was created, Check variables needed."
-        read -p
+        read ""
         exit
     fi
 fi
