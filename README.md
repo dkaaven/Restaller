@@ -40,6 +40,7 @@ Even though I try to make it work as smooth as possible, please read the [script
 ## How to run
 ```
 git clone https://github.com/dkaaven/restaller
+cd restaller
 bash install.sh
 
 ```
