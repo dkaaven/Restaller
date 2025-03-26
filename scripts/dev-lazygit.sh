@@ -7,3 +7,5 @@ tar xf lazygit.tar.gz lazygit
 sudo install lazygit -D -t /usr/local/bin/
 rm lazygit
 rm lazygit.tar.gz
+
+read -n 1 -s -r -p "Press any key to continue"

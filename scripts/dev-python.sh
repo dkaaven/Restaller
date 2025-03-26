@@ -26,3 +26,5 @@ if [ -e ~/.zshrc ];then
 else
     echo ".zshrc does not exist"
 fi
+
+read -n 1 -s -r -p "Press any key to continue"

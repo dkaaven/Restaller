@@ -18,3 +18,5 @@ xdg-open lutris:battlenet-standard;
 else
 echo "Open lutris and re-run the script."
 fi
+
+read -n 1 -s -r -p "Press any key to continue"

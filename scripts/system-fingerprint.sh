@@ -10,3 +10,5 @@ echo "Installing fingerprint reader"
 else
     echo "APT is not installed"
 fi
+
+read -n 1 -s -r -p "Press any key to continue"

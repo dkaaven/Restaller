@@ -54,3 +54,5 @@ if [ ! -e "~/go/bin/fabric" ];then
     fabric --setup
 
 fi
+
+read -n 1 -s -r -p "Press any key to continue"

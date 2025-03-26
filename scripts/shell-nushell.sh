@@ -26,3 +26,5 @@ fi
 # nupm - Nushell package manager
 #TODO: Find out if this is enough
 # $env.NUPM_HOME = ($env.XDG_DATA_HOME | path join "nupm")
+
+read -n 1 -s -r -p "Press any key to continue"

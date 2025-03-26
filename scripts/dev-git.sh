@@ -20,3 +20,5 @@ git config --global init.defaultBranch main
 git config --global core.editor $GIT_EDITOR
 git config --global push.default simple
 git config --global core.ignorecase false
+
+read -n 1 -s -r -p "Press any key to continue"

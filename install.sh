@@ -26,6 +26,9 @@ for file in scripts/*.sh; do
 done
 
 # Display list with tagline (2nd line in script)
+# Run a script file based on the selection
+selection=""
+while true;do
 clear
 
 cat <<'EOF'
@@ -50,10 +53,6 @@ for i in "${!files[@]}"; do
     printf "[%2d]   %-22s %s\n" "$((i + 1))" "$name" "$tag"
 done
 
-
-# Run a script file based on the selection
-selection=""
-while true;do
     read -p "Enter a number to install, or q to quit: " selection
 
     if [[ "$selection" == "q" || "$selection" == "Q" ]]; then

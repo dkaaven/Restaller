@@ -18,3 +18,5 @@ sudo apt install -y xclip
 add_to_shell_rc 'alias xcopy="xclip -i"'
 add_to_shell_rc 'alias xpaste="xclip -o"'
 
+read -n 1 -s -r -p "Press any key to continue"
+

@@ -33,3 +33,5 @@ if [ ! -e /usr/local/bin/starship ]; then
 else
     echo "Starship already installed"
 fi
+
+read -n 1 -s -r -p "Press any key to continue"
