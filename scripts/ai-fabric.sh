@@ -11,9 +11,12 @@ if [ ! -e "/usr/bin/go" ]; then
     sudo apt update
     sudo apt install -y golang-go
     # Golang environment variables
-    cp ~/.bashrc ~/.bashrc.backup
-    cat go.sh >> ~/.bashrc
-    source ~/.bachrc
+    if grep -q "/usr/local/go" ~/.bashrc; then
+        echo "Go already added to .bashrc";else
+        cp -b ~/.bashrc ~/.bashrc.backup
+        cat go.sh >> ~/.bashrc
+        source ~/.bachrc
+    fi
 else
     echo "Go is already installed"
 fi
@@ -31,8 +34,11 @@ if [ ! -e "~/go/bin/fabric" ];then
     # Install Fabric
     curl -L https://github.com/danielmiessler/fabric/releases/latest/download/fabric-linux-amd64 > fabric && chmod +x fabric && ./fabric --version
     go install github.com/danielmiessler/fabric@latest
-    cat $ROOT_DIR/assets/fabric.sh >> ~/.bashrc
-    source ~/.bachrc
+    if grep -q "~/.config/fabric/patterns/" ~/.bashrc; then
+        echo "Fabric already added to .bashrc";else   
+        cat $ROOT_DIR/assets/fabric.sh >> ~/.bashrc
+        source ~/.bachrc
+    fi
 
     if [ -e ~/.zshrc ];then
   
