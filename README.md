@@ -11,10 +11,27 @@
                @dkaaven
        -------------------------
 ```
+
+
 # Restaller - Simplifying reinstallation
 
-This script will help you set up the system the first time.
+This script will help you set up the system the first time. It uses my preferred settings and plugins. 
 
+## About the project
+
+This is a project I use while distro-hopping, testing new tools and learning shell-scripting at the same time.
+The code is built in stages and revisited to improve previous scripts with new things I learn along the way.
+
+I do try to comment the code as much as I see relevant.
+
+## Lisence
+[GNU GPLv3](LICENSE)
+
+⚠️ No warranty, use at your own risk. ⚠️ 
+Even though I try to make it work as smooth as possible, please read the [script-files](scripts/) before running the script.
+
+
+# Install instructions
 ## Requirements
 * Ubuntu-based distro
 * Bash
@@ -27,8 +44,9 @@ bash install.sh
 
 ```
 
-## Tested on
-* [Pop!_OS](https://system76.com/pop/)
+# Documentation
+
+
 
 ## Content
 | Folder | File | Description |
@@ -40,11 +58,17 @@ bash install.sh
 | / | [install.sh](install.sh) | Shows a list of all install scripts and let you run them. |
 | / | [config.sh.temp](config.sh.temp) | A template for the config file |
 
-# TO DO
+## Tested on
+* [Pop!_OS](https://system76.com/pop/)
+
+# Project plans
+
+
+## TO DO
 - [ ] Support more distros
 - [ ] Support more shells
 - [ ] A function to install based on distro
 - [ ] A function to add shells
 
 # Author
-Daniel Kåven - [@dkaaven](https://github.com/dkaaven)
+**Daniel Kåven** - [@dkaaven](https://github.com/dkaaven)

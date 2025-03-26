@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install Fabric by Daniel Miessler (Dependencies: Go)
+# Fabric by Daniel Miessler (Dependencies: Go)
 if [ -z "$ROOT_DIR" ]; then
     ROOT_DIR=".."
 fi
