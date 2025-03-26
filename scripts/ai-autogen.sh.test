@@ -1,0 +1,27 @@
+#!/bin/bash
+# Autogen studio is an AI agent manager
+
+if [ -z "$ROOT_DIR" ]; then
+    ROOT_DIR=".."
+fi
+
+source $ROOT_DIR/config.sh
+
+AG_ROOT="$GIT_ROOT_FOLDER/autogenstudio"
+
+
+python3 -m pip install -U "autogen-agentchat" "autogen-ext[openai]"
+
+# Create a script folder for autogen
+if [ ! -d "$AG_ROOT" ];then
+    mkdir $AG_ROOT
+    echo "$AG_ROOT created"
+else
+    echo "$AG_ROOT exists"
+fi
+
+# Copy main script into place
+cp -b "$ROOT_DIR/assets/autogen-python.py" "$AG_ROOT/main.py"
+
+# Run AutoGen Studio on http://localhost:8080
+docker build -f .devcontainer/full/Dockerfile -t autogen_full_img https://github.com/microsoft/autogen.git#main

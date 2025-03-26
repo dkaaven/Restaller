@@ -1,0 +1,17 @@
+#!/bin/bash
+# Add your information and rename file to config.sh
+
+# Git settings
+GIT_USER_NAME=""
+GIT_EMAIL=""
+
+#
+GIT_USER_NAME="Daniel Kåven"
+GIT_EMAIL="daniel@kaaven.se"
+
+
+# Models for Ollama, one per line
+declare -a ollama_models=(
+    "llama3.1"
+    "hf.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF"
+)
