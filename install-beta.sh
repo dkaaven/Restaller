@@ -31,12 +31,11 @@ selectscript=""
 mapfile -t folders < <(find scripts/ -mindepth 1 -type d | sort)
 
 while true;do
-
+    clear
+    echo ""
+    cat assets/script-logo.txt
+    echo ""
     if [[ $currentfolder == "" ]]; then
-        clear
-        echo ""
-        cat assets/script-logo.txt
-        echo ""
         for i in "${!folders[@]}"; do
             tag=$(sed -n '1p' "${folders[$i]}/README.md")
             name=$(basename "${folders[$i]}")
@@ -57,10 +56,6 @@ while true;do
         fi
 
     else
-        clear
-        echo ""
-        cat assets/script-logo.txt
-        echo ""
         mapfile -t files < <(find scripts/$currentfolder -type f -name "*.sh" | sort)
         for i in "${!files[@]}"; do
             tag=$(sed -n '2p' "${files[$i]}")
