@@ -21,37 +21,28 @@ fi
 
 # Get an array of all files in scripts
 files=()
-for file in scripts/*.sh; do
-    [ -f "$file" ] && files+=("$file")
-done
+# for file in scripts/*.sh; do
+#     [ -f "$file" ] && files+=("$file")
+# done
+
+# Get files from sub-directorieus
+mapfile -t files < <(find scripts/ -type f -name "*.sh" | sort)
 
 # Display list with tagline (2nd line in script)
 # Run a script file based on the selection
 selection=""
 while true;do
-clear
+    clear
+    echo ""
+    cat assets/script-logo.txt
+    echo ""
 
-cat <<'EOF'
-   ____           _        _ _           
-  |  _ \ ___  ___| |_ __ _| | | ___ _ __ 
-  | |_) / _ \/ __| __/ _` | | |/ _ \ '__|
-  |  _ <  __/\__ \ || (_| | | |  __/ |   
-  |_| \_\___||___/\__\__,_|_|_|\___|_|   
-
-         Shell Script Installer
-       -------------------------
-            By Daniel Kåven
-               @dkaaven
-       -------------------------
-
-EOF
-
-for i in "${!files[@]}"; do
-    tag=$(sed -n '2p' "${files[$i]}")
-    name=$(basename "${files[$i]}")
-    name="${name%.sh}"
-    printf "[%2d]   %-22s %s\n" "$((i + 1))" "$name" "$tag"
-done
+    for i in "${!files[@]}"; do
+        tag=$(sed -n '2p' "${files[$i]}")
+        name=$(basename "${files[$i]}")
+        name="${name%.sh}"
+        printf "[%2d]   %-22s %s\n" "$((i + 1))" "$name" "$tag"
+    done
 
     read -p "Enter a number to install, or q to quit: " selection
 
