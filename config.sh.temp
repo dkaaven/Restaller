@@ -2,13 +2,10 @@
 # Add your information and rename file to config.sh
 
 # Git settings
-GIT_USER_NAME=""
-GIT_EMAIL=""
-
-#
-GIT_USER_NAME="Daniel Kåven"
-GIT_EMAIL="daniel@kaaven.se"
-
+export GIT_USER_NAME=""
+export GIT_EMAIL=""
+export GIT_EDITOR="codium"
+export GIT_ROOT_FOLDER="$HOME/github"
 
 # Models for Ollama, one per line
 declare -a ollama_models=(
