@@ -6,7 +6,7 @@ export ROOT_DIR
 
 # Check if config exist or copy from template.
 if [ ! -e "config.sh" ];then
-    if [ ! -e "config.sh.temp" ];then
+    if [ -e "config.sh.temp" ];then
         cp config.sh.temp config.sh
         echo -e "Config file was created, please update it before you continue."
         read ""
@@ -26,12 +26,12 @@ files=()
 # done
 
 # Get files from sub-directorieus
-mapfile -t files < <(find scripts/ -type f -name "*.sh" | sort)
+mapfile -O 1 -t files < <(find scripts/ -type f -name "*.sh" | sort)
 
 # Display list with tagline (2nd line in script)
 # Run a script file based on the selection
 selection=""
-while true;do
+while [[ ! "$selection" =~ [Qq] ]]; do 
     clear
     echo ""
     cat assets/script-logo.txt
@@ -41,19 +41,14 @@ while true;do
         tag=$(sed -n '2p' "${files[$i]}")
         name=$(basename "${files[$i]}")
         name="${name%.sh}"
-        printf "[%2d]   %-22s %s\n" "$((i + 1))" "$name" "$tag"
+        printf "[%2d]   %-22s %s\n" "$i" "$name" "$tag"
     done
 
     read -p "Enter a number to install, or q to quit: " selection
 
-    if [[ "$selection" == "q" || "$selection" == "Q" ]]; then
-        echo "Quitting."
-        break
-    elif [[ "$selection" =~ ^[0-9]+$ ]]; then
-        index=$((selection - 1))
+    if [[ "$selection" =~ ^[0-9]+$ ]]; then
+        index=$((selection))
         echo "You selected index: ${files[$index]}. "
         source "$ROOT_DIR/${files[$index]}"
-    else
-        echo "Invalid input. Please enter a number or 'q'."
     fi
 done
