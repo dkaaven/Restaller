@@ -28,7 +28,7 @@ I do try to comment the code as much as I see relevant.
 [GNU GPLv3](LICENSE)
 
 ⚠️ No warranty, use at your own risk. ⚠️ 
-Even though I try to make it work as smooth as possible, please read the [script-files](scripts/) before running the script.
+Even though I try to make it work as smooth as possible, please read the [script-files](scripts/README.md) before running the script.
 
 
 # Install instructions

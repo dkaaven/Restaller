@@ -1,13 +1,11 @@
 # Script folder
-install.sh will list every file in this folder and display the second line as a tag.
+Each folder is a category, and every .sh file in the folders are install scripts.
 
-## Filename structure
-The category - software will be implemented later when more scripts are added.
-To future-proof use this naming convention: 
-{category}-{software}.sh
+install.sh uses these folders and shell files to make the menu.
 
+Each category folder has a README.md, the first line is the description for the category.
 
-## script.sh requirements
+## [script].sh requirements
 Every script need this at the top of the file.
 
 ```
@@ -17,18 +15,34 @@ Every script need this at the top of the file.
 <Your code>
 ```
 
-## Accessing config and functions
-When making a new script, here are some useful snippets.
+## Accessing config og assets
+This snippet makes sure that relative path work both when using the install script and when running the script-file directly.
 ```
-source ../config.sh                # Get config variables
-source ../assets/functions.sh      # Get functions
+if [ -z "$ROOT_DIR" ]; then
+    ROOT_DIR="../.."
+fi
+
+source $ROOT_DIR/config.sh                # Get config variables
+source $ROOT_DIR/assets/functions.sh      # Get functions
+
 ```
+
 
 ## Check if file or folder exists
-To avoid reinstalling when already installed, check if file exists.
+To avoid reinstalling when already installed.
 
+### Check if file exists
 ```
 if [ ! -e <file-path> ]; then
+    # Do if file is missing
+else
+    # Do if file exists
+fi
+```
+### Check if folder exists
+
+```
+if [ ! -d <file-path> ]; then
     # Do if file is missing
 else
     # Do if file exists
