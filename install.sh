@@ -1,6 +1,7 @@
 #!/bin/bash
-# Install script
+# Install script (Beta), testing new functions ahead of time.
 
+# This defines the root folder of the script
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export ROOT_DIR
 
@@ -19,36 +20,54 @@ if [ ! -e "config.sh" ];then
     fi
 fi
 
-# Get an array of all files in scripts
+# Init variables
 files=()
-# for file in scripts/*.sh; do
-#     [ -f "$file" ] && files+=("$file")
-# done
+folders=()
+selectfolder=""
+currentfolder=""
+selectscript=""
 
-# Get files from sub-directorieus
-mapfile -O 1 -t files < <(find scripts/ -type f -name "*.sh" | sort)
+# Get all sub-directories scripts
+mapfile -O 1 -t folders < <(find scripts/ -mindepth 1 -maxdepth 1 -type d | sort)
 
-# Display list with tagline (2nd line in script)
-# Run a script file based on the selection
-selection=""
-while [[ ! "$selection" =~ [Qq] ]]; do 
+while [[ ! "$selectfolder" =~ [Qq] ]]; do 
     clear
     echo ""
     cat assets/script-logo.txt
     echo ""
+    if [[ $currentfolder == "" ]]; then
+        for i in "${!folders[@]}"; do
+            tag=$(sed -n '1p' "${folders[$i]}/README.md")
+            name=$(basename "${folders[$i]}")
+            printf "[%2d]   %-22s %s\n" "$i" "$name" "$tag"
+        done
 
-    for i in "${!files[@]}"; do
-        tag=$(sed -n '2p' "${files[$i]}")
-        name=$(basename "${files[$i]}")
-        name="${name%.sh}"
-        printf "[%2d]   %-22s %s\n" "$i" "$name" "$tag"
-    done
+        read -p "Enter a number to install, or q to exit: " selectfolder
+      
+        if [[ "$selectfolder" =~ ^[0-9]+$ ]]; then
+            index=$((selectfolder))
+            currentfolder=$(basename "${folders[$index]}")
+        fi
 
-    read -p "Enter a number to install, or q to quit: " selection
+    else
+        mapfile -t files < <(find scripts/$currentfolder -type f -name "*.sh" | sort)
+        for i in "${!files[@]}"; do
+            tag=$(sed -n '2p' "${files[$i]}")
+            name=$(basename "${files[$i]}")
+            name="${name%.sh}"
+            printf "[%2d]   %-22s %s\n" "$((i + 1))" "$name" "$tag"
+        done
 
-    if [[ "$selection" =~ ^[0-9]+$ ]]; then
-        index=$((selection))
-        echo "You selected index: ${files[$index]}. "
-        source "$ROOT_DIR/${files[$index]}"
+        read -p "Enter a number to install, or Enter to return to main: " selectscript
+
+        if [[ "$selectscript" == "" ]]; then
+            currentfolder=""
+        elif [[ "$selectscript" =~ ^[0-9]+$ ]]; then
+            index=$((selectscript - 1))
+            echo "You selected index: ${files[$index]}. "
+            source "$ROOT_DIR/${files[$index]}"
+        else
+            echo "Invalid input. Please enter a number or press Enter."
+        fi
     fi
 done
