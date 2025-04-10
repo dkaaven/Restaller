@@ -20,6 +20,8 @@ elif [ $? = '1' ];then
     sudo apt update && sudo apt install gum
 fi
 
+source $ROOT_DIR/assets/gum-styles.sh
+
 
 # Check if config exist or copy from template.
 if [ ! -e "config.sh" ];then
@@ -34,7 +36,6 @@ if [ ! -e "config.sh" ];then
         read ""
         exit
     fi
-    source config.sh
 fi
 
 # Init variables
@@ -54,7 +55,7 @@ folders=$(find scripts/ -mindepth 1 -maxdepth 1 -type d | sort)
 while true; do
     # Display header
     clear
-    gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "$logo"
+    gum style --border normal --margin "1" --padding "1 15" --border-foreground 212 "$logo"
 
     selectedfolder=$(echo "$folders" | sed 's|scripts/||' | gum choose --header "Select a category:")
 
@@ -70,9 +71,7 @@ while true; do
         | sed "s|.sh$||")
         selectedscript=$(echo "$files" | gum choose --header "Select a script:")
         if [ -n "$selectedscript" ]; then
-            gum spin --spinner dot \
-            --title "Installing..." \
-            -- bash -c ". scripts/$selectedfolder/$selectedscript.sh"
+            source "scripts/$selectedfolder/$selectedscript.sh"
 
             selectedfolder=""
         fi
