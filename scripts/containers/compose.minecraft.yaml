@@ -1,0 +1,25 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server
+    container_name: minecraft_container
+    hostname: minecraft
+    restart: unless-stopped
+    env_file: .minecraft.env
+    tty: true
+    stdin_open: true
+    ports:
+      - 25565:25565     # minecraft server players connect
+      - 8100:8100       # bluemap
+      - 8123:8123       # dynmap
+    volumes:
+      - ~/podman/minecraft_data:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+#networks:
+#  default:
+#    name: $DOCKER_MY_NETWORK
+#    external: false

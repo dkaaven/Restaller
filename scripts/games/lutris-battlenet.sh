@@ -1,12 +1,13 @@
 #!/bin/bash
 # Battle.net using Lutris
+if [ -z "$ROOT_DIR" ]; then
+    ROOT_DIR="../.."
+fi
 
-# https://github.com/lutris/docs/blob/master/WineDependencies.md
-
-# Enable 32 bit and download dependencies
-sudo dpkg --add-architecture i386
-sudo apt update
-sudo apt install -y wine64 wine32 libasound2-plugins:i386 libsdl2-2.0-0:i386 libdbus-1-3:i386 libsqlite3-0:i386 lutris
+source $ROOT_DIR/assets/functions.sh
+if ! command -v lutris;then
+    source scripts/games/lutris.sh
+fi
 
 echo ""
 echo "You need to open lutris once to setup"

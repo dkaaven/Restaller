@@ -1,0 +1,29 @@
+#!/bin/bash
+# Dockge  https://github.com/louislam/dockge
+
+if [ -z "$ROOT_DIR" ]; then
+    ROOT_DIR="../.."
+fi
+if [ ! command -v podman ]; then
+    source "$ROOT_DIR/scripts/dev/podman.sh"
+fi
+
+# Create directories that store your stacks and stores Dockge's stack
+mkdir -p $HOME/podman/stacks $HOME/podman/dockge
+cd $HOME/podman/dockge
+
+# Download the compose.yaml
+curl https://raw.githubusercontent.com/louislam/dockge/master/compose.yaml --output compose.yaml
+
+podman compose up
+
+cd -
+if grep -q "127.0.0.1:5001 dockge.pod" /etc/hosts; then
+    echo "Already in hosts"
+else
+    sudo bash -c "echo '127.0.0.1:5001 dockge.pod' >> /etc/hosts"
+    sudo systemctl restart systemd-hostnamed
+fi
+
+export restaller_message="Dockge container installed."
+read -n 1 -s -r -p "Press any key to continue"

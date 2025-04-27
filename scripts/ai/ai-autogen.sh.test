@@ -10,7 +10,6 @@ source $ROOT_DIR/config.sh
 AG_ROOT="$GIT_ROOT_FOLDER/autogenstudio"
 
 
-python3 -m pip install -U "autogen-agentchat" "autogen-ext[openai]"
 
 # Create a script folder for autogen
 if [ ! -d "$AG_ROOT" ];then
@@ -19,6 +18,13 @@ if [ ! -d "$AG_ROOT" ];then
 else
     echo "$AG_ROOT exists"
 fi
+
+# cd $AG_ROOT
+# uv env
+# uv add 
+
+python3 -m pip install -U "autogen-agentchat" "autogen-ext[openai]"
+
 
 # Copy main script into place
 cp -b "$ROOT_DIR/assets/autogen-python.py" "$AG_ROOT/main.py"
