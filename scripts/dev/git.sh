@@ -1,35 +1,40 @@
 #!/bin/bash
 # Git with --global settings
 
-if [ -z "$ROOT_DIR" ]; then
-    ROOT_DIR=".."
+install_app git gh
+
+# Get Git variables
+if [ "$GIT_USER_NAME" = "" ]; then
+    GIT_USER_NAME=$(gum input --placeholder "What is your Git username?")
+fi
+if [ "$GIT_EMAIL" = "" ]; then
+    GIT_EMAIL=$(gum input --placeholder "What is your Git email?")
+fi
+if [ "$GIT_EDITOR" = "" ];then
+    GIT_USER_NAME=$(gum input --placeholder "What is your editor (ex. code)?")
 fi
 
-source $ROOT_DIR/config.sh
-
-sudo apt install -y git gh
-echo "Select Github.com"
-echo "Select SSH"
-echo "Select Y to use credentials"
-gh auth login
-
-if [ $GIT_USER_NAME="" ]; then
-    read -p "Git user name; " GIT_USER_NAME
-fi
-if [ $GIT_EMAIL="" ]; then
-    read -p "Git user email; " GIT_EMAIL
-fi
+if [ ! "$GIT_USER_NAME" = "" ]; then
 git config --global user.name $GIT_USER_NAME
-git config --global useremail $GIT_EMAIL
+fi
 
-# TODO: Add read to config as well.
-
-
+if [ ! "$GIT_EMAIL" = "" ]; then
+    git config --global user.email $GIT_EMAIL
+fi
+if [ ! "$GIT_EDITOR" = "" ];then
+    git config --global core.editor $GIT_EDITOR
+fi
 git config --global init.defaultBranch main
-git config --global core.editor $GIT_EDITOR
 git config --global push.default simple
 git config --global core.ignorecase false
 
-export restaller_message="Git installed"
+gum style --margin "1" --padding "1 15" "1. Select Github.com
+2. Select https
+3. Select Y to use credentials"
+gh auth login
+if ! command -v lazygit; then
+    gum confirm "Install lazygit" && source $ROOT_DIR/scripts/dev/git-lazygit.sh
+fi
 
-read -n 1 -s -r -p "Press any key to continue"
+restaller_apps="git gh"
+restaller_message="Git installed and configured."
