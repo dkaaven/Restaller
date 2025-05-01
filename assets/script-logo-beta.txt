@@ -5,7 +5,7 @@
   |_| \_\___||___/\__\__,_|_|_|\___|_|   
 
          Shell Script Installer
-                v1.0b
+                v1.1b
        -------------------------
             By Daniel Kåven
                @dkaaven

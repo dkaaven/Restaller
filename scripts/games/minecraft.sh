@@ -8,3 +8,4 @@ rm Minecraft.deb
 minecraft-launcher
 
 restaller_message="Minecraft is installing in background"
+read -n 1 -s -r -p "Press any key to continue"

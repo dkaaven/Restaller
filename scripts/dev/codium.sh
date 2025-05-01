@@ -1,12 +1,6 @@
 #!/bin/bash
 # Codium is a Telemetry-free version of Visual Studio Code
 
-if [ -z "$ROOT_DIR" ]; then
-    ROOT_DIR="../.."
-fi
-
-source $ROOT_DIR/assets/functions.sh
-
 if [ ! -e "/usr/share/keyrings/vscodium-archive-keyring.asc" ];then
     # Get GPG signature key
     sudo wget https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg -O /usr/share/keyrings/vscodium-archive-keyring.asc
@@ -15,10 +9,9 @@ if [ ! -e "/usr/share/keyrings/vscodium-archive-keyring.asc" ];then
     sudo apt update
 fi
 
-sudo apt install -y codium
+install_app codium
 
-shell_text="alias code=codium"
-add_to_shell_rc "alias" $shell_text 
+add_to_shell_rc "alias" 'alias code=codium'
 
 export restaller_message="Codium installed"
 

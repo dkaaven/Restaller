@@ -20,4 +20,6 @@ else
 echo "Open lutris and re-run the script."
 fi
 
+restaller_message="Battle.net is installed"
+
 read -n 1 -s -r -p "Press any key to continue"

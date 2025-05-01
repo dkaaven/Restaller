@@ -1,24 +1,18 @@
 #!/bin/bash
-# Install script (Beta), testing new functions ahead of time.
+# Install script
 
 # This defines the root folder of the script
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export ROOT_DIR
+export ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Check if config exist or copy from template.
-if [ ! -e "config.sh" ];then
-    if [ -e "config.sh.temp" ];then
-        cp config.sh.temp config.sh
-        echo -e "Config file was created, please update it before you continue."
-        read ""
-        exit
-    else
-        touch config.sh
-        echo -e "An empty Config file was created, Check variables needed."
-        read ""
-        exit
-    fi
+# Get the functions script.
+source ./assets/functions.sh
+
+# Check dependencies and run setup.sh if needed
+dpkg -l gum &>/dev/null
+if [ $? != '0' ];then
+    source ./setup.sh
 fi
+source $ROOT_DIR/assets/gum-styles.sh
 
 # Init variables
 files=()
@@ -26,48 +20,53 @@ folders=()
 selectfolder=""
 currentfolder=""
 selectscript=""
+restaller_apps=""
+restaller_message=""
+
+logo=$(cat $ROOT_DIR/assets/script-logo.txt)
 
 # Get all sub-directories scripts
-mapfile -O 1 -t folders < <(find scripts/ -mindepth 1 -maxdepth 1 -type d | sort)
+folders=$(find scripts/ -mindepth 1 -maxdepth 1 -type d | sort)
 
-while [[ ! "$selectfolder" =~ [Qq] ]]; do 
+
+while true; do
+    # Display header
     clear
+    gum style --margin "1" --padding "1 15" "$logo"
+    if [ ! "$restaller_apps" == "" ]; then
+        gum format "# $restaller_apps"
+    fi
+    if [ ! "$restaller_message" = "" ]; then
+        gum format "# $restaller_message"
+    fi
     echo ""
-    cat assets/script-logo.txt
-    echo ""
-    if [[ $currentfolder == "" ]]; then
-        for i in "${!folders[@]}"; do
-            tag=$(sed -n '1p' "${folders[$i]}/README.md")
-            name=$(basename "${folders[$i]}")
-            printf "[%2d]   %-22s %s\n" "$i" "$name" "$tag"
-        done
+    selectedfolder=$(echo "$folders" | sed 's|scripts/||' | gum choose --header "Select a category:")
 
-        read -p "Enter a number to install, or q to exit: " selectfolder
-      
-        if [[ "$selectfolder" =~ ^[0-9]+$ ]]; then
-            index=$((selectfolder))
-            currentfolder=$(basename "${folders[$index]}")
-        fi
+    # Exit the loop if user presses Esc or Ctrl+C
+    if [ $? -ne 0 ]; then
+        echo "Exiting..."
+        break
+    fi
 
-    else
-        mapfile -t files < <(find scripts/$currentfolder -type f -name "*.sh" | sort)
-        for i in "${!files[@]}"; do
-            tag=$(sed -n '2p' "${files[$i]}")
-            name=$(basename "${files[$i]}")
-            name="${name%.sh}"
-            printf "[%2d]   %-22s %s\n" "$((i + 1))" "$name" "$tag"
-        done
+    if [ -n $selectedfolder ];then
+        files=$(find "scripts/$selectedfolder/" -mindepth 1 -maxdepth 1 -type f -name "*.sh" \
+        | sed "s|scripts/$selectedfolder/||" \
+        | sed "s|.sh$||")
+        selectedscript=$(echo "$files" | gum choose --header "Select a script:")
+        if [ -n "$selectedscript" ]; then
+            source scripts/$selectedfolder/$selectedscript.sh
 
-        read -p "Enter a number to install, or Enter to return to main: " selectscript
-
-        if [[ "$selectscript" == "" ]]; then
-            currentfolder=""
-        elif [[ "$selectscript" =~ ^[0-9]+$ ]]; then
-            index=$((selectscript - 1))
-            echo "You selected index: ${files[$index]}. "
-            source "$ROOT_DIR/${files[$index]}"
-        else
-            echo "Invalid input. Please enter a number or press Enter."
+            selectedfolder=""
         fi
     fi
 done
+
+unset restaller_apps
+unset restaller_message
+
+if [ "$restart" == true ]; then
+    gum confirm "Reboot is needed, reboot now?" && reboot || gum format --type="markdown" "# Reboot is recommended to finish install"
+fi
+
+# Remove all exported variables for GUM
+source ./assets/gum-reset.sh

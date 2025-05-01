@@ -15,8 +15,10 @@ elif [ $? = '1' ];then
 fi
 
 # Clone installer
-git clone https://github.com/dkaaven/restaller
-cd restaller
+if [ ! -e install.sh ]; then
+    git clone https://github.com/dkaaven/restaller
+    cd restaller
+fi
 
 read -p "Choose (S)tandard or (B)eta: " installer
 if [ $installer = "s" ];then

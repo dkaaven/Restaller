@@ -15,8 +15,10 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 shell_text='
 # Python UV
 eval "$(uv generate-shell-completion bash)"
-eval "$(uvx --generate-shell-completion bash)"'
+eval "$(uvx --generate-shell-completion bash)"
+'
+add_to_shell_rc "UV" "$shell_text"
 
-add_to_shell_rc "UV" $shell_text 
+restaller_message="Python and UV installed."
 
 read -n 1 -s -r -p "Press any key to continue"

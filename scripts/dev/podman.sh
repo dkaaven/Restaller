@@ -7,7 +7,9 @@ sudo apt install -y podman podman-compose podman-docker qemu-utils qemu-system-x
 
 # Install Podman Desktop using flathub
 if [ command -v flatpak ]; then
-    flatpak install flathub io.podman_desktop.PodmanDesktop
+  flatpak install flathub io.podman_desktop.PodmanDesktop
+else 
+  "Can't install Podman desktop, need flatpak support."
 fi
 
 # Fetch latest version og gvproxy from GitHub for amd64 arch
@@ -37,27 +39,22 @@ systemctl --user enable podman.service
 systemctl --user start podman.service
 
 # Start Podman VM
+#TODO: check if machine exists.
 podman machine init
 podman machine set --rootful=true
 podman machine start
 
-# Set alias in bashrc and reload
-echo "# Run Podman instead of Docker" >> ~/.bashrc
-echo "alias docker=podman" >> ~/.bashrc 
-echo "alias docker-container='podman container'" >> ~/.bashrc 
-source ~/.bashrc
 
-# TODO:
+# TODO: Change config file
 # old_string='# unqualified-search-registries = ["example.com"]'
 # new_string='unqualified-search-registries = ["docker.io"]'
 # sudo sed -i "s|$old_string|$new_string|g" /etc/containers/registries.conf
 
-if [ ! -e "~/.zshrc" ];then
-    echo "" >> ~/.config/zsh/alias.zsh 
-    echo "# Run Podman instead of Docker" >> ~/.config/zsh/alias.zsh 
-    echo "alias docker=podman" >> ~/.config/zsh/alias.zsh
-    echo "alias docker-container='podman container'" >> ~/.config/zsh/alias.zsh 
-fi
+# Set alias in bashrc and reload
+string_text="# Run Podman instead of Docker
+alias docker=podman
+alias docker-container='podman container'"
+add_to_shell_rc "alias" "$string_text"
 
 export restaller_message="Podman installed"
 

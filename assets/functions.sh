@@ -1,47 +1,82 @@
 #!/bin/bash
+
 function add_to_shell_rc () {
-    # One command to add to all installed shells rc's.
-    local name=$1
-    local string=$2
+    local name="$1"
+    local string="$2"
 
-    # Bash
-    if grep -q "$string" $HOME/.bashrc; then
-        echo "$name already added to .bashrc"
-    else   
-        cat $string >> ~/.bashrc
-    fi
+    # ---------- BASH ----------
+    if command -v bash >/dev/null 2>&1; then
+        local bash_config_dir="$HOME/.config/bash"
+        local bash_file="$bash_config_dir/${name}.bash"
 
-    # Zshell
-    if [ -e /usr/bin/zsh ];then
-        if $name="alias";then
-            touch "$HOME/.config/zsh/$name.zsh"
-            echo $string >> $HOME/.config/zsh/$name.zsh
-            if grep -q "source ~/.config/zsh/alias.zsh" $HOME/.zshrc; then
-            
-            else
-                echo "source ~/.config/zsh/alias.zsh" >> $HOME/.zshrc
-            fi                
-        elif [ -e $HOME/.config/zsh/$name.zsh ];then
-            echo "$name already exists in zsh"
-        else   
-            touch "$HOME/.config/zsh/$name.zsh"
-            echo $string >> $HOME/.config/zsh/$name.zsh
-            echo "source ~/.config/zsh/$name.zsh" >> $HOME/.zshrc
+        mkdir -p "$bash_config_dir"
+
+        if ! grep -Fq "$string" "$bash_file" 2>/dev/null; then
+            echo "$string" >> "$bash_file"
+            echo "$name added to bash"
+        fi
+
+        # Ensure it's sourced in .bashrc
+        if ! grep -q "source ~/.config/bash/${name}.bash" "$HOME/.bashrc"; then
+            echo "source ~/.config/bash/${name}.bash" >> "$HOME/.bashrc"
         fi
     fi
 
-    # Nushell
-    if [ -e /usr/bin/nu ];then
-        if [ -e $HOME/.config/nushell/$name.nu ];then
-            echo "$name already exists in nushell"
-        else   
-            touch "$HOME/.config/nushell/$name.nu"
-            echo $string >> $HOME/.config/nushell/$name.nu
-            echo "source $HOME/.config/nushell/$name.sh" >> $HOME/.config/nushell/config.nu
+    # ---------- ZSH ----------
+    if command -v zsh >/dev/null 2>&1; then
+        local zsh_config_dir="$HOME/.config/zsh"
+        local zsh_file="$zsh_config_dir/${name}.zsh"
+
+        mkdir -p "$zsh_config_dir"
+
+        if ! grep -Fq "$string" "$zsh_file" 2>/dev/null; then
+            echo "$string" >> "$zsh_file"
+            echo "$name added to zsh"
+        fi
+
+        # Ensure it's sourced in .zshrc
+        if ! grep -q "source ~/.config/zsh/${name}.zsh" "$HOME/.zshrc"; then
+            echo "source ~/.config/zsh/${name}.zsh" >> "$HOME/.zshrc"
         fi
     fi
-
 }
 
-#function add_to_repo () {
-#}
+install_app() {
+    apps=("$@")
+
+    for app in "${apps[@]}"; do
+        gum spin --title "Installing $app..." -- bash -c "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq $app"
+    done
+    export restaller_apps="Installed apps: $@"
+}
+
+php_version_is_84_or_higher() {
+    # Get the candidate version and strip epoch and suffix
+    version=$(apt-cache policy php | awk '/Candidate:/ {print $2}' | cut -d':' -f2 | cut -d'+' -f1)
+
+    # Compare using sort -V
+    if [[ $(printf "%s\n" "8.4" "$version" | sort -V | head -n1) == "8.4" ]]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+# function add_ppt () {
+#     name=$1
+#     url=$2
+# TODO: Find a better way to add gpg, need to add deb url
+
+#     if [[ "$url" == *gpg ]];then
+#         if [ ! -e "/usr/share/keyrings/$name-archive-keyring.asc" ];then
+#             # Get GPG signature key
+#             sudo wget $URL -O /usr/share/keyrings/$name-archive-keyring.asc
+#             # Add to repository
+#             echo "deb [ signed-by=/usr/share/keyrings/$name-archive-keyring.asc ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs $name main" | sudo tee /etc/apt/sources.list.d/$name.list
+#             sudo apt update
+#         fi
+#     else
+#         echo "Error: Not a correct URL for keyring, need to end with gpg."
+#     fi
+
+# }

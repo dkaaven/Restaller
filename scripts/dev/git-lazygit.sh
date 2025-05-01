@@ -8,4 +8,6 @@ sudo install lazygit -D -t /usr/local/bin/
 rm lazygit
 rm lazygit.tar.gz
 
+export restaller_message="Lazygit installed"
+
 read -n 1 -s -r -p "Press any key to continue"
