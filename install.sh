@@ -34,10 +34,10 @@ while true; do
     clear
     gum style --margin "1" --padding "1 15" "$logo"
     if [ ! "$restaller_apps" == "" ]; then
-        gum format "# $restaller_apps"
+        gum format --type="markdown" "# $restaller_apps"
     fi
     if [ ! "$restaller_message" = "" ]; then
-        gum format "# $restaller_message"
+        gum format --type="markdown" "# $restaller_message"
     fi
     echo ""
     selectedfolder=$(echo "$folders" | sed 's|scripts/||' | gum choose --header "Select a category:")
