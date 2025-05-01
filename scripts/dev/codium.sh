@@ -13,6 +13,5 @@ install_app codium
 
 add_to_shell_rc "alias" 'alias code=codium'
 
-export restaller_message="Codium installed"
-
-read -n 1 -s -r -p "Press any key to continue"
+export restaller_apps="codium"
+export restaller_message=""
