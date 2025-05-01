@@ -24,7 +24,7 @@
 
     # Format
     export GUM_FORMAT_TYPE="markdown"
-    export GUM_FORMAT_THEME=""
+    # export GUM_FORMAT_THEME=""
 
     # Choose
     export GUM_CHOOSE_CURSOR_FOREGROUND="$gum_accent"

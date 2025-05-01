@@ -50,17 +50,7 @@ install_app() {
     export restaller_apps="Installed apps: $@"
 }
 
-php_version_is_84_or_higher() {
-    # Get the candidate version and strip epoch and suffix
-    version=$(apt-cache policy php | awk '/Candidate:/ {print $2}' | cut -d':' -f2 | cut -d'+' -f1)
 
-    # Compare using sort -V
-    if [[ $(printf "%s\n" "8.4" "$version" | sort -V | head -n1) == "8.4" ]]; then
-        echo "true"
-    else
-        echo "false"
-    fi
-}
 
 # function add_ppt () {
 #     name=$1
